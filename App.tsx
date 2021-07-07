@@ -47,7 +47,7 @@ const App: React.FC = () => {
         <Text style={styles.author}>{qoute.author}</Text>
         <Text style={styles.qoute}>"{qoute.quote}"</Text>
         <TouchableOpacity style={styles.button} onPress={refresh}>
-          <Text>Reload</Text>
+          <Text style={styles.btnText}>Reload</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     marginTop: 15,
+  },
+  btnText: {
+    color: 'white',
   },
 });
 
