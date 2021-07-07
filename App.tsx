@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, View, StyleSheet, Button} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
 
 interface IQoute {
@@ -10,6 +16,7 @@ interface IQoute {
 
 const App: React.FC = () => {
   const [qoute, setQoute] = useState<IQoute>({});
+  const [loading, setLoading] = useState(true);
 
   const options: any = {
     method: 'GET',
@@ -21,7 +28,12 @@ const App: React.FC = () => {
   };
 
   const refresh = () => {
-    axios.request(options).then(res => setQoute(res.data));
+    setLoading(true);
+
+    axios.request(options).then(res => {
+      setLoading(false);
+      setQoute(res.data);
+    });
   };
 
   useEffect(() => {
@@ -31,10 +43,13 @@ const App: React.FC = () => {
   return (
     <SafeAreaView>
       <View style={{padding: 10}}>
+        {loading && <Text>Loading</Text>}
         <Text style={styles.author}>{qoute.author}</Text>
         <Text style={styles.qoute}>"{qoute.quote}"</Text>
+        <TouchableOpacity style={styles.button} onPress={refresh}>
+          <Text>Reload</Text>
+        </TouchableOpacity>
       </View>
-      <Button onPress={refresh} title="Reload" />
     </SafeAreaView>
   );
 };
@@ -48,6 +63,14 @@ const styles = StyleSheet.create({
   qoute: {
     fontStyle: 'italic',
     fontSize: 15,
+  },
+  button: {
+    backgroundColor: 'blue',
+    textAlign: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    padding: 5,
+    marginTop: 15,
   },
 });
 
